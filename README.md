@@ -6,6 +6,7 @@
 ![LLM](https://img.shields.io/badge/LLM-Llama%203.1%208B-6366F1?style=flat)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat&logo=windows)
 ![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat)
+![Version](https://img.shields.io/badge/Version-2.0-3B82F6?style=flat)
 
 ---
 
@@ -160,6 +161,28 @@ jas/
 - [ ] Plugin system for custom actions
 - [ ] Local LLM support (Ollama)
 
+---
+
+## Changelog
+
+### v2.0 — UI Overhaul
+
+* Migrated from tkinter to CustomTkinter for a modern native UI
+* Step cards now have rounded corners and animated color states
+* Switches replaced checkboxes for Auto-execute and Self-healing
+* History sidebar now uses scrollable button list
+* Status pill redesigned as a proper rounded badge
+* General spacing, padding, and typography improvements
+
+### v1.0 — Initial Release
+
+* Natural language → action plan via Llama 3.1 8B
+* Live step visualizer
+* Self-healing retry (up to 3 attempts)
+* Screenshot verification via Llama 3.2 Vision
+* Persistent command history
+* Session logging with export
+ 
 ---
 
 ## License
