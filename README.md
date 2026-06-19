@@ -27,7 +27,7 @@ That's it. No scripting. No learning hotkeys. Just describe the task.
 | Feature | Description |
 |---|---|
 | 🧠 **LLM Planning** | Converts natural language to structured action plans via Llama 3.1 8B |
-| 🖥️ **Clean GUI** | Modern dark-themed interface with live step visualization |
+| 🖥️ **Modern GUI** | Built with CustomTkinter — native rounded UI with live step visualization |
 | 🔁 **Self-Healing** | If a step fails, JAS automatically retries with error context (up to 3 attempts) |
 | 📸 **Screenshot Verification** | After execution, JAS takes a screenshot and asks the LLM if the goal was achieved |
 | 📋 **Command History** | Sidebar with persistent history — click any past command to re-run it |
