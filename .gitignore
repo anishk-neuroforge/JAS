@@ -1,0 +1,28 @@
+# JAS .gitignore
+
+# API keys — NEVER commit this
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# Logs and history (optional to commit)
+logs/
+history.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
