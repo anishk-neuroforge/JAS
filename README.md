@@ -1,194 +1,680 @@
 # ⚡ JAS — Just Automate Something
 
-> A natural language desktop automation agent. Tell it what you want done. It figures out the steps.
+> A natural-language desktop automation agent that plans, executes, monitors, retries, and verifies tasks.
 
-![Python](https://img.shields.io/badge/Python-3.11+-3B82F6?style=flat&logo=python&logoColor=white)
-![LLM](https://img.shields.io/badge/LLM-Llama%203.1%208B-6366F1?style=flat)
-![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat&logo=windows)
-![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat)
-![Version](https://img.shields.io/badge/Version-2.0-3B82F6?style=flat)
+<p align="center">
+  <b>Describe the task. Review the plan. Let JAS automate it.</b>
+</p>
 
----
-
-## What is JAS?
-
-JAS turns plain English into desktop automation. You describe what you want — JAS generates a step-by-step plan using an LLM, shows you exactly what it's going to do, and executes it with your confirmation.
-
-```
->>> Open Notepad and type a haiku about rain
-```
-
-That's it. No scripting. No learning hotkeys. Just describe the task.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-3B82F6?style=flat&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/LLM-Llama%203.1%208B-6366F1?style=flat" alt="LLM">
+  <img src="https://img.shields.io/badge/Platform-Windows-0078D4?style=flat&logo=windows&logoColor=white" alt="Platform">
+  <img src="https://img.shields.io/badge/Automation-PyAutoGUI-7C3AED?style=flat" alt="Automation">
+  <img src="https://img.shields.io/badge/License-MIT-22C55E?style=flat" alt="License">
+  <img src="https://img.shields.io/badge/Version-2.0-A855F7?style=flat" alt="Version">
+</p>
 
 ---
 
-## Features
+## 📸 Dashboard Preview
+
+<p align="center">
+  <img src="JASDEMO.png" alt="JAS Desktop Automation Dashboard" width="900">
+</p>
+
+
+---
+
+## 🔍 What is JAS?
+
+**JAS — Just Automate Something** is an LLM-powered desktop automation agent that converts natural-language commands into structured action plans and executes them directly on the user's desktop.
+
+Instead of manually writing automation scripts, the user simply describes a task:
+
+```text
+Open Notepad and type a haiku about rain
+```
+
+JAS then:
+
+```text
+Understands the request
+        ↓
+Generates an execution plan
+        ↓
+Displays the planned actions
+        ↓
+Requests user confirmation
+        ↓
+Executes each action
+        ↓
+Tracks execution progress
+        ↓
+Retries failed tasks with error context
+        ↓
+Captures the final screen
+        ↓
+Uses an LLM to verify task completion
+```
+
+No automation scripting is required.
+
+Just describe the task.
+
+---
+
+## ✨ Features
 
 | Feature | Description |
 |---|---|
-| 🧠 **LLM Planning** | Converts natural language to structured action plans via Llama 3.1 8B |
-| 🖥️ **Modern GUI** | Built with CustomTkinter — native rounded UI with live step visualization |
-| 🔁 **Self-Healing** | If a step fails, JAS automatically retries with error context (up to 3 attempts) |
-| 📸 **Screenshot Verification** | After execution, JAS takes a screenshot and asks the LLM if the goal was achieved |
-| 📋 **Command History** | Sidebar with persistent history — click any past command to re-run it |
-| 📝 **Live Step Visualizer** | Watch each step light up as it executes in real time |
-| 📁 **Log Export** | Full timestamped logs saved per session, exportable on demand |
-| 🔐 **Secure Config** | API key stored in `.env`, never hardcoded |
+| 🧠 **LLM-Powered Planning** | Converts natural-language instructions into structured automation plans using Llama 3.1 8B |
+| 🖥️ **Modern Desktop Dashboard** | Dark-themed graphical interface for commands, execution monitoring, logs, and automation status |
+| ⚡ **Real-Time Execution** | Executes generated automation plans directly on the desktop |
+| 📋 **Live Step Visualizer** | Displays every generated action and updates its execution state in real time |
+| 🔁 **Self-Healing Execution** | Automatically generates a recovery plan when execution fails using the original plan and error context |
+| 📸 **Screenshot Verification** | Captures the final desktop state and uses an LLM to evaluate whether the requested goal was achieved |
+| 👤 **Human-in-the-Loop Control** | Requires confirmation before execution unless Auto Execute mode is enabled |
+| 📜 **Persistent Command History** | Stores previous automation commands for quick reuse |
+| 📝 **Activity Logging** | Maintains timestamped execution logs for debugging and analysis |
+| 📁 **Log Export** | Allows automation session logs to be exported |
+| 🔐 **Environment-Based Configuration** | Keeps API credentials outside the source code using `.env` configuration |
 
 ---
 
-## Supported Actions
+## 🎯 Why JAS?
 
-| Action | What it does |
+Traditional desktop automation tools usually require:
+
+- Scripts
+- Hardcoded workflows
+- Macros
+- Fixed sequences of actions
+- Programming knowledge
+
+JAS explores a different approach.
+
+The user specifies the **goal**, while the LLM determines the **sequence of actions** required to achieve it.
+
+```text
+Traditional Automation
+
+User
+ ↓
+Writes Script
+ ↓
+Defines Every Action
+ ↓
+Executes Automation
+
+
+JAS
+
+User
+ ↓
+Describes Goal
+ ↓
+LLM Generates Plan
+ ↓
+JAS Executes Plan
+ ↓
+LLM Verifies Result
+```
+
+This project explores the integration of **Large Language Models, autonomous agents, desktop automation, execution monitoring, failure recovery, and visual verification**.
+
+---
+
+## ⚙️ How JAS Works
+
+JAS uses a multi-stage automation pipeline.
+
+### 1. Natural-Language Command
+
+The user enters a task through the desktop interface.
+
+```text
+Open Calculator and calculate 256 * 32
+```
+
+### 2. LLM Planning
+
+The command is sent to the language model.
+
+The LLM converts the request into a structured JSON execution plan.
+
+```json
+{
+  "steps": [
+    {
+      "action": "press",
+      "key": "win"
+    },
+    {
+      "action": "write",
+      "text": "calculator"
+    },
+    {
+      "action": "press",
+      "key": "enter"
+    }
+  ]
+}
+```
+
+### 3. Plan Visualization
+
+Before execution, the generated steps are displayed in the JAS dashboard.
+
+Each step can have one of several states:
+
+```text
+○ Pending
+◉ Running
+✓ Success
+✕ Error
+− Skipped
+```
+
+### 4. Human Confirmation
+
+By default, JAS requests confirmation before executing the generated plan.
+
+Users can optionally enable **Auto Execute** mode.
+
+### 5. Desktop Execution
+
+The executor processes each action sequentially using desktop automation controls.
+
+### 6. Self-Healing
+
+If execution fails, JAS sends the following information back to the LLM:
+
+```text
+Original User Command
++
+Original Execution Plan
++
+Failed Step
++
+Execution Error
+```
+
+The LLM then generates a recovery plan.
+
+JAS supports up to three execution attempts.
+
+### 7. Screenshot Verification
+
+After execution, JAS captures the final desktop state.
+
+The screenshot and original user command are analyzed to determine whether the task was successfully completed.
+
+---
+
+## 🧠 System Architecture
+
+```text
+┌───────────────────────────────┐
+│             USER              │
+│                               │
+│   Natural Language Command    │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│          JAS DASHBOARD        │
+│                               │
+│   Command Input               │
+│   Execution Plan              │
+│   Activity Stream             │
+│   Automation Status           │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│          LLM PLANNER          │
+│                               │
+│   Understand User Intent      │
+│   Generate Structured Plan    │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│       AUTOMATION EXECUTOR     │
+│                               │
+│   Keyboard Actions            │
+│   Mouse Actions               │
+│   Waiting                     │
+│   Screenshots                 │
+└───────────────┬───────────────┘
+                │
+         ┌──────┴──────┐
+         │             │
+         ▼             ▼
+┌────────────────┐  ┌────────────────┐
+│    SUCCESS     │  │    FAILURE     │
+│                │  │                │
+│  Screenshot    │  │  Error Context │
+│  Verification  │  │       ↓        │
+│                │  │  Self-Healing  │
+└────────────────┘  └────────────────┘
+```
+
+---
+
+## 🎬 Example Workflow
+
+### User Command
+
+```text
+Open Notepad and type Hello from JAS
+```
+
+### Generated Plan
+
+```json
+{
+  "steps": [
+    {
+      "action": "press",
+      "key": "win"
+    },
+    {
+      "action": "write",
+      "text": "notepad"
+    },
+    {
+      "action": "wait",
+      "seconds": 1
+    },
+    {
+      "action": "press",
+      "key": "enter"
+    },
+    {
+      "action": "wait",
+      "seconds": 2
+    },
+    {
+      "action": "write",
+      "text": "Hello from JAS"
+    },
+    {
+      "action": "screenshot"
+    }
+  ]
+}
+```
+
+### Execution Flow
+
+```text
+✓ Opening application
+✓ Entering application name
+✓ Waiting for application
+✓ Launching application
+✓ Waiting for window
+✓ Typing requested text
+✓ Capturing final screen
+```
+
+---
+
+## 🎮 Supported Actions
+
+| Action | Description | Example |
+|---|---|---|
+| `press` | Press a single keyboard key | `enter`, `win`, `escape` |
+| `hotkey` | Execute a keyboard shortcut | `Ctrl + C`, `Alt + F4` |
+| `write` | Type text using the keyboard | `"Hello World"` |
+| `click` | Click specific screen coordinates | `(500, 300)` |
+| `move` | Move the mouse cursor | `(800, 450)` |
+| `scroll` | Scroll vertically | `3`, `-5` |
+| `wait` | Pause execution | `2 seconds` |
+| `screenshot` | Capture the current screen | Final-state verification |
+
+---
+
+## 💻 Technology Stack
+
+| Technology | Purpose |
 |---|---|
-| `press` | Press a single key (enter, win, escape, F1–F12…) |
-| `hotkey` | Key combinations (Ctrl+C, Alt+F4, Win+R…) |
-| `write` | Type a string of text |
-| `click` | Click at screen coordinates |
-| `move` | Move the mouse to a position |
-| `scroll` | Scroll up or down |
-| `wait` | Pause for N seconds |
-| `screenshot` | Capture the screen |
+| **Python 3.11+** | Core application development |
+| **Tkinter** | Desktop graphical interface |
+| **PyAutoGUI** | Keyboard, mouse, and screenshot automation |
+| **Llama 3.1 8B** | Natural-language understanding and execution planning |
+| **Vision LLM** | Screenshot-based execution verification |
+| **NVIDIA NIM** | LLM API inference |
+| **Threading** | Background automation execution |
+| **JSON** | Structured communication between the LLM and executor |
+| **dotenv** | Secure environment configuration |
 
 ---
 
-## Quick Start
+## 📁 Project Structure
 
-### 1. Clone & install
+```text
+JAS/
+│
+├── main.py
+│   └── Desktop dashboard and application controller
+│
+├── llm.py
+│   └── LLM planning and execution verification
+│
+├── executor.py
+│   └── Desktop action execution engine
+│
+├── logger.py
+│   └── Session logging and log export
+│
+├── history.py
+│   └── Persistent automation command history
+│
+├── prompt.txt
+│   └── System instructions for the LLM planner
+│
+├── assets/
+│   └── jas-dashboard.png
+│
+├── logs/
+│   └── Generated automation session logs
+│
+├── .env.example
+│   └── Environment configuration template
+│
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/jas.git
-cd jas
+git clone https://github.com/anishk-neuroforge/JAS.git
+cd JAS
+```
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+Activate the virtual environment.
+
+#### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Set up your API key
+### 4. Configure the API Key
+
+Create your `.env` file.
+
+#### Windows
+
+```bash
+copy .env.example .env
+```
+
+#### Linux / macOS
 
 ```bash
 cp .env.example .env
-# Edit .env and paste your NVIDIA API key
 ```
 
-Get a free API key at [build.nvidia.com](https://build.nvidia.com).
+Add your NVIDIA API key:
 
-### 3. Run
+```env
+NVIDIA_API_KEY=your_api_key_here
+```
+
+### 5. Run JAS
 
 ```bash
 python main.py
 ```
 
----
+The JAS dashboard will launch.
 
-## How it works
-
-```
-User types command
-       ↓
-   LLM generates JSON plan
-   [{"action":"press","key":"win"}, ...]
-       ↓
-   GUI shows plan with step cards
-       ↓
-   User confirms (or auto-execute)
-       ↓
-   Executor runs each step live
-       ↓
-   If failure → self-healing retry with error context
-       ↓
-   Screenshot taken → LLM verifies result
-```
+Enter a natural-language automation command and start automating.
 
 ---
 
-## Example Plans
+## 🔁 Self-Healing Execution
 
-**"Open calculator"**
+One of the core features of JAS is its ability to respond to execution failures.
+
+A traditional automation script usually follows this pattern:
+
+```text
+Execute
+   ↓
+Failure
+   ↓
+Stop
+```
+
+JAS uses a recovery loop:
+
+```text
+Execute Plan
+     ↓
+Step Failure
+     ↓
+Collect Error Context
+     ↓
+Send Failure to LLM
+     ↓
+Generate Recovery Plan
+     ↓
+Execute Again
+     ↓
+Maximum 3 Attempts
+```
+
+The recovery context includes:
+
 ```json
 {
-  "steps": [
-    {"action": "press", "key": "win"},
-    {"action": "write", "text": "calculator"},
-    {"action": "wait", "seconds": 1},
-    {"action": "press", "key": "enter"}
-  ]
+  "failed_step": 3,
+  "error": "Execution error information",
+  "original_plan": {
+    "steps": []
+  }
 }
 ```
 
-**"Copy all text in the current window"**
-```json
-{
-  "steps": [
-    {"action": "hotkey", "keys": ["ctrl", "a"]},
-    {"action": "hotkey", "keys": ["ctrl", "c"]},
-    {"action": "screenshot"}
-  ]
-}
-```
+This allows the model to generate a revised automation strategy instead of simply repeating the failed plan.
 
 ---
 
-## Safety
+## 📸 Screenshot Verification
 
-- **Human-in-the-loop by default** — JAS asks for confirmation before executing any plan
-- **Failsafe enabled** — move your mouse to the top-left corner to instantly abort
-- **No web access** — JAS only controls your local desktop
-- **Transparent** — the full plan is shown before anything runs
+Completing an execution plan does not necessarily mean the user's goal was achieved.
+
+JAS addresses this problem through post-execution verification.
+
+```text
+Automation Completed
+        ↓
+Capture Screenshot
+        ↓
+Send Screenshot + Original Goal
+        ↓
+Vision Model Analysis
+        ↓
+Success / Verification Note
+```
+
+This creates an additional feedback mechanism between execution and task completion.
 
 ---
 
-## Project Structure
+## 🔐 Safety
 
-```
-jas/
-├── main.py          # GUI application (tkinter)
-├── llm.py           # LLM integration (NVIDIA / Llama 3.1)
-├── executor.py      # Action executor (pyautogui)
-├── logger.py        # Session logging
-├── history.py       # Persistent command history
-├── prompt.txt       # System prompt for the LLM
-├── .env.example     # API key template
-├── requirements.txt
-└── logs/            # Auto-generated session logs
-```
+Desktop automation software can directly interact with applications and user interfaces. JAS therefore includes several safety mechanisms.
+
+- **Human-in-the-loop by default** — execution requires user confirmation.
+- **Transparent planning** — generated actions are displayed before execution.
+- **PyAutoGUI failsafe** — moving the cursor to the top-left corner can immediately interrupt automation.
+- **Limited action space** — the executor only supports explicitly implemented automation actions.
+- **Maximum retry limit** — self-healing execution is limited to prevent infinite retry loops.
+- **Environment-based credentials** — API keys are not hardcoded into the application.
+
+> JAS executes actions on your desktop. Always review generated plans before running automation involving important files, accounts, or applications.
 
 ---
 
-## Roadmap
+## 🗺️ Roadmap
 
-- [ ] Voice input (speak your command)
-- [ ] Macro recording & replay
+- [ ] Voice command input
+- [ ] Real-time desktop preview
+- [ ] Application-aware automation
+- [ ] Improved visual grounding
 - [ ] Multi-monitor support
-- [ ] Plugin system for custom actions
-- [ ] Local LLM support (Ollama)
+- [ ] Macro recording and replay
+- [ ] Custom automation plugins
+- [ ] Local LLM support with Ollama
+- [ ] Advanced execution memory
+- [ ] Cross-platform automation support
+- [ ] Configurable agent tools
+- [ ] Workflow saving and sharing
 
 ---
 
-## Changelog
+## 📈 Future Vision
 
-### v2.0 — UI Overhaul
+JAS currently demonstrates the core agent loop:
 
-* Migrated from tkinter to CustomTkinter for a modern native UI
-* Step cards now have rounded corners and animated color states
-* Switches replaced checkboxes for Auto-execute and Self-healing
-* History sidebar now uses scrollable button list
-* Status pill redesigned as a proper rounded badge
-* General spacing, padding, and typography improvements
+```text
+Understand
+    ↓
+Plan
+    ↓
+Execute
+    ↓
+Observe
+    ↓
+Recover
+    ↓
+Verify
+```
+
+Future versions can expand this architecture toward more capable computer-use agents with:
+
+- Visual understanding
+- Application context
+- Long-term execution memory
+- Dynamic tool selection
+- Multi-step reasoning
+- Workflow learning
+- Local model execution
+
+The long-term objective is to explore how LLM-powered agents can interact with desktop environments through transparent, observable, and recoverable automation workflows.
+
+---
+
+## 📋 Changelog
+
+### v2.0 — Dashboard Redesign
+
+- Redesigned the JAS desktop dashboard
+- Added modern dark-themed interface
+- Added dedicated automation workspace
+- Improved execution-plan visualization
+- Added real-time activity status
+- Improved automation status indicators
+- Added compact command interface
+- Improved history accessibility
+- Improved activity-stream visualization
+- Refined typography, spacing, and visual hierarchy
 
 ### v1.0 — Initial Release
 
-* Natural language → action plan via Llama 3.1 8B
-* Live step visualizer
-* Self-healing retry (up to 3 attempts)
-* Screenshot verification via Llama 3.2 Vision
-* Persistent command history
-* Session logging with export
- 
----
-
-## License
-
-MIT — do whatever you want with it.
+- Natural language to structured action planning
+- Llama 3.1 8B integration
+- Desktop automation execution
+- Live step visualizer
+- Self-healing retries
+- Screenshot verification
+- Persistent command history
+- Session logging
+- Log export
 
 ---
 
-*Built with Python, tkinter, pyautogui, and Llama 3.1 via NVIDIA NIM.*
+## 🤝 Contributing
+
+Contributions, ideas, and technical improvements are welcome.
+
+If you plan to make a major change, open an issue first to discuss the proposed implementation.
+
+Areas for contribution include:
+
+- New automation actions
+- GUI improvements
+- Visual grounding
+- Local LLM integration
+- Cross-platform support
+- Execution reliability
+- Agent evaluation
+
+---
+
+## ⚠️ Disclaimer
+
+JAS is an experimental and educational desktop automation project.
+
+Generated automation plans may produce unexpected actions. Review execution plans carefully and avoid running untrusted commands in sensitive environments.
+
+The project is intended for learning, experimentation, and research into LLM-powered desktop automation agents.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+**Anish K**
+
+Building projects at the intersection of:
+
+- Artificial Intelligence
+- Machine Learning
+- Autonomous Agents
+- Desktop Automation
+- Intelligent Systems
+
+---
+
+<p align="center">
+  <b>⚡ JAS — Describe the task. Let the agent handle the steps.</b>
+</p>
+
+<p align="center">
+  If you find the project interesting, consider giving the repository a ⭐
+</p>
